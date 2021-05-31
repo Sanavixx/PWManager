@@ -6,7 +6,7 @@ from colorama import Style
 from cryptography.fernet import Fernet
 
 def main():
-    database = r"C:\sqlite\pwmanager.db"
+    database = r"/home/manjaro/Documents/Scripts/pwmanager.db"
 
     sql_create_accounts = """ CREATE TABLE IF NOT EXISTS accounts (
                                         id integer PRIMARY KEY,
@@ -76,6 +76,7 @@ def choice(option, conn):
         c = conn.cursor()
         c.execute("SELECT name FROM accounts ORDER BY name")
         lname = c.fetchall()
+        clear()
         print(Fore.CYAN + "Account Listing:"  + Style.RESET_ALL)
         print("--------------------------------")
         for names in lname:
@@ -151,11 +152,13 @@ def updateAccount(conn):
             c.execute("UPDATE accounts SET name = ?, username = ?, password = ? WHERE name = ?", (name, username, encrypted_message, name,))
             conn.commit()
 
+            clear()
             print(Fore.GREEN + "Account " + name + " has been updated." + Style.RESET_ALL)
             returnMenu()
 
         # If account doesn't exist, displays error
         else:
+            clear()
             print(Fore.RED + "No account exists under " + name + ". Names are case-sensitive." + Style.RESET_ALL)
             returnMenu()
     except sqlite3.Error as error:
@@ -182,6 +185,7 @@ def createAccount(conn):
         c.execute(sql, task)
         conn.commit()
 
+        clear()
         print(Fore.GREEN + "Account " + name + " has been created." + Style.RESET_ALL)
         returnMenu()
     except sqlite3.Error as error:
@@ -205,11 +209,13 @@ def removeAccount(conn):
             c.execute("DELETE FROM accounts WHERE name = ?", (name,))
             conn.commit()
 
+            clear()
             print(Fore.GREEN + "Account " + name + " has been deleted." + Style.RESET_ALL)
             returnMenu()
 
         # If account doesn't exist, displays error
         else:
+            clear()
             print(Fore.RED + "No account exists under " + name + ". Names are case-sensitive." + Style.RESET_ALL)
             returnMenu()
     except sqlite3.Error as error:
@@ -217,7 +223,6 @@ def removeAccount(conn):
 
 # Lists options after running one of the main functions
 def returnMenu():
-    clear()
     print("\n")
     print(Fore.CYAN + "Sub Menu" + Style.RESET_ALL)
     print("--------------------------------")
