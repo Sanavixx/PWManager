@@ -6,7 +6,7 @@ from colorama import Style
 from cryptography.fernet import Fernet
 
 def main():
-    database = r"/home/manjaro/Documents/Scripts/pwmanager.db"
+    database = r"" # Filepath for DB
 
     sql_create_accounts = """ CREATE TABLE IF NOT EXISTS accounts (
                                         id integer PRIMARY KEY,
@@ -123,6 +123,7 @@ def retrieveAccount(conn):
 
         # If account doesn't exist, displays error
         else:
+            clear()
             print(Fore.RED + "No account exists under " + name + ". Names are case-sensitive." + Style.RESET_ALL)
             returnMenu()
     except sqlite3.Error as error:
